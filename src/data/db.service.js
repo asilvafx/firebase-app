@@ -33,7 +33,7 @@ class DBService {
     }
 
     // New method to get an item by a specific key-value pair
-    getItemByKeyValue(key, value, table) {
+    readBy(key, value, table) {
         const itemsRef = ref(db, `/${table}`);
         const q = query(itemsRef, orderByChild(key), equalTo(value));
 
@@ -69,7 +69,7 @@ class DBService {
     }
 
     // Get an item by a id pair
-    getItem(key, table) {
+    read(key, table) {
         const itemsRef = ref(db, `/${table}/${key}`);
         const q = query(itemsRef);
 
@@ -83,7 +83,7 @@ class DBService {
         });
     }
 
-    getAll(table) {
+    readAll(table) {
         const requestRef = ref(db, `/${table}`);
         return get(requestRef).then((snapshot) => {
             if (snapshot.exists()) {
@@ -115,9 +115,9 @@ class DBService {
     }
 
     // Method to upload an image and return the download URL
-    async uploadImage(image, path) {
-        const imageRef = storageRef(storage, path); // Renamed variable to avoid conflict
-        const snapshot = await uploadBytes(imageRef, image);
+    async upload(file, path) {
+        const fileRef = storageRef(storage, path); // Renamed variable to avoid conflict
+        const snapshot = await uploadBytes(fileRef, file);
         return await getDownloadURL(snapshot.ref);
     }
 }
